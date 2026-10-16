@@ -1,12 +1,30 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import vm from 'node:vm';
 import {prepareAttack, speechBodyFrame} from '../scripts/recorded-voice/attack.mjs';
 
+test('the approved Maeve count-in is preserved and the bundled AAC matches its manifest', () => {
+    const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+    const provenance = JSON.parse(readFileSync(new URL('../scripts/maeve-voice/source/manifest.json', import.meta.url)));
+    const manifest = JSON.parse(readFileSync(new URL('../public/audio/counts-maeve-v6.json', import.meta.url)));
+    assert.equal(hash(readFileSync(new URL('./fixtures/counts-maeve-v6.wav', import.meta.url))), provenance.approvedCommonWaveSha256);
+    const context = vm.createContext({});
+    vm.runInContext(readFileSync(new URL('../public/audio/voice-data.js', import.meta.url), 'utf8'), context);
+    const bundled = context.MetronomeVoiceData;
+    assert.equal(bundled.voice, 'Maeve');
+    assert.equal(bundled.voiceId, '64cf4f1a-61c8-5938-9aea-83d12b2e1d13');
+    assert.equal(hash(Buffer.from(bundled.encoded, 'base64')), manifest.sha256);
+    assert.equal(hash(readFileSync(new URL('../public/audio/counts-maeve-v6.m4a', import.meta.url))), manifest.sha256);
+    assert.equal(hash(readFileSync(new URL('../public/audio/counts-maeve-extra-v6.m4a', import.meta.url))), manifest.extra.sha256);
+    assert.equal(hash(readFileSync(new URL('../public/audio/counts-maeve-words-v6.m4a', import.meta.url))), manifest.extended.sha256);
+});
+
 test('every prepared count has meaningful energy within 30 ms, not just a noise spike', () => {
-    const manifest = JSON.parse(readFileSync(new URL('../public/audio/counts-natural-v4.json', import.meta.url)));
+    const manifest = JSON.parse(readFileSync(new URL('../public/audio/counts-maeve-v6.json', import.meta.url)));
     for (const [file, clips] of [
-        ['counts-natural-v4', manifest.clips], ['counts-natural-extra-v4', manifest.extra.clips],
+        ['counts-maeve-v6', manifest.clips], ['counts-maeve-extra-v6', manifest.extra.clips],
     ]) {
         const wave = readFileSync(new URL(`./fixtures/${file}.wav`, import.meta.url));
         for (const [word, variants] of Object.entries(clips)) for (const {offset, length} of variants) {
