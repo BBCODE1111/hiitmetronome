@@ -1,0 +1,160 @@
+{
+  "version": 6,
+  "sampleRate": 24000,
+  "voice": "Maeve",
+  "voiceId": "64cf4f1a-61c8-5938-9aea-83d12b2e1d13",
+  "voiceType": "preset",
+  "provider": "Higgsfield",
+  "model": "seed_audio",
+  "sourceManifestSha256": "44d65f9b732ecb76db437bfe31547307e58f9323c1c55daa82b10184414c9dad",
+  "clips": {
+    "zero": {
+      "offset": 0,
+      "length": 13900
+    },
+    "one": {
+      "offset": 14860,
+      "length": 11016
+    },
+    "two": {
+      "offset": 26836,
+      "length": 9538
+    },
+    "three": {
+      "offset": 37334,
+      "length": 9361
+    },
+    "four": {
+      "offset": 47655,
+      "length": 9996
+    },
+    "five": {
+      "offset": 58611,
+      "length": 11906
+    },
+    "six": {
+      "offset": 71477,
+      "length": 12021
+    },
+    "seven": {
+      "offset": 84458,
+      "length": 11587
+    },
+    "eight": {
+      "offset": 97005,
+      "length": 11422
+    },
+    "nine": {
+      "offset": 109387,
+      "length": 18115
+    },
+    "ten": {
+      "offset": 128462,
+      "length": 11008
+    },
+    "eleven": {
+      "offset": 140430,
+      "length": 12801
+    },
+    "twelve": {
+      "offset": 154191,
+      "length": 10611
+    },
+    "thirteen": {
+      "offset": 165762,
+      "length": 14825
+    },
+    "fourteen": {
+      "offset": 181547,
+      "length": 14800
+    },
+    "fifteen": {
+      "offset": 197307,
+      "length": 14948
+    },
+    "sixteen": {
+      "offset": 213215,
+      "length": 14089
+    },
+    "seventeen": {
+      "offset": 228264,
+      "length": 14540
+    },
+    "eighteen": {
+      "offset": 243764,
+      "length": 14752
+    },
+    "nineteen": {
+      "offset": 259476,
+      "length": 16418
+    },
+    "twenty": {
+      "offset": 276854,
+      "length": 8402
+    },
+    "thirty": {
+      "offset": 286216,
+      "length": 9003
+    },
+    "forty": {
+      "offset": 296179,
+      "length": 8976
+    },
+    "fifty": {
+      "offset": 306115,
+      "length": 10244
+    },
+    "sixty": {
+      "offset": 317319,
+      "length": 11395
+    },
+    "seventy": {
+      "offset": 329674,
+      "length": 11770
+    },
+    "eighty": {
+      "offset": 342404,
+      "length": 10952
+    },
+    "ninety": {
+      "offset": 354316,
+      "length": 13348
+    },
+    "hundred": {
+      "offset": 368624,
+      "length": 11710
+    },
+    "thousand": {
+      "offset": 381294,
+      "length": 14751
+    },
+    "million": {
+      "offset": 397005,
+      "length": 12246
+    },
+    "billion": {
+      "offset": 410211,
+      "length": 12838
+    },
+    "trillion": {
+      "offset": 424009,
+      "length": 11715
+    },
+    "quadrillion": {
+      "offset": 436684,
+      "length": 17753
+    },
+    "rest": {
+      "offset": 455397,
+      "length": 13561
+    },
+    "next": {
+      "offset": 469918,
+      "length": 13786
+    },
+    "speed": {
+      "offset": 484664,
+      "length": 10713
+    }
+  }
+}

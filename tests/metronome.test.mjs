@@ -6,15 +6,15 @@ import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 
 const voiceDataSource = readFileSync(new URL('../public/audio/voice-data.js', import.meta.url), 'utf8');
-const commonWave = readFileSync(new URL('./fixtures/counts-natural-v4.wav', import.meta.url));
-const extraWave = readFileSync(new URL('./fixtures/counts-natural-extra-v4.wav', import.meta.url));
+const commonWave = readFileSync(new URL('./fixtures/counts-maeve-v6.wav', import.meta.url));
+const extraWave = readFileSync(new URL('./fixtures/counts-maeve-extra-v6.wav', import.meta.url));
 const decodedCache = new Map();
 
 const audioSource = readFileSync(new URL('../src/audio.js', import.meta.url), 'utf8');
 const source = readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const manifest = JSON.parse(readFileSync(new URL('../public/audio/counts-v2.json', import.meta.url)));
-const wave = readFileSync(new URL('../public/audio/counts-v2.wav', import.meta.url));
+const manifest = JSON.parse(readFileSync(new URL('../public/audio/counts-maeve-words-v6.json', import.meta.url)));
+const wave = readFileSync(new URL('./fixtures/counts-maeve-words-v6.wav', import.meta.url));
 
 function createApp({ audio = true, loading = false, failed = false, sampleRate = manifest.sampleRate } = {}) {
   const elements = new Map();
@@ -78,7 +78,7 @@ function createApp({ audio = true, loading = false, failed = false, sampleRate =
     async fetch(url) {
       requests.push(url); await gate;
       if (network.failed) throw new Error('offline');
-      return { ok: true, json: async () => manifest, arrayBuffer: async () => new Uint8Array([url.includes('natural-extra') ? 1 : 2]).buffer };
+      return { ok: true, json: async () => manifest, arrayBuffer: async () => new Uint8Array([url.includes('maeve-extra') ? 1 : 2]).buffer };
     },
     setTimeout(fn, delay = 0) { const key = ++id; timers.set(key, { fn, at: clock + delay / 1000 }); return key; },
     clearTimeout: key => timers.delete(key), console,
@@ -127,7 +127,7 @@ test('first cold start waits for required core voice data; second start uses dec
   assert.equal(app.voices[0].time, 3.05 - .02);
   app.run('stop()');
   await app.run('start()');
-  assert.ok(app.requests.every(url=>url.includes('natural-extra')), 'first 1–4 start makes no audio network request');
+  assert.ok(app.requests.every(url=>url.includes('maeve-extra')), 'first 1–4 start makes no audio network request');
   assert.equal(app.voices[1].time, app.clicks[1].time - .02);
 });
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.1
+
+- 將預設聲音改為試聽後選定的 Maeve；1–4 與 Rest 沿用已確認的音檔與處理方式。
+- 補齊同一聲音的 5–10 與延伸數字，保留自由拍數、變速、休息與音量功能。
+- 納入原始錄音、分段範圍與離線產生器；重建語音不需 API、憑證或下載模型。
+- 發布包移除歷史聲音比較頁，只包含目前啟用的語音。
+
+## 1.4.0（試聽版，未發布）
+
+- 將預備拍、延伸數字及休息提示統一換成 Kokoro Heart 女聲，原始語音以正常速度產生。
+- 1–10 的高速長度版本於發布前處理，維持原音高與既有音訊時鐘；常用報數播放時不執行語音生成或時間壓縮。
+- 發布包只包含目前啟用的語音庫；舊版錄音仍保留在原始碼中。
+- 更新語音版本網址，避免舊快取混用新舊語音。
+
 ## 1.3.1
 
 - Shorten the breathy/quiet openings of recorded counts 1–10 before preparing tempo variants. Retain short consonants and explicitly preserve the initial t burst of two/ten; leave the main vowel waveform unchanged during attack preparation.

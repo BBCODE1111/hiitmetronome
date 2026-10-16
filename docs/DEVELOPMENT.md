@@ -19,7 +19,7 @@ npm run preview
 
 ## 語音起音處理
 
-1–10 錄音會先縮短過長的氣音與輕聲開頭，保留約 25 ms 的子音。two 與 ten 另外保留 t 的起始爆破音；主要母音維持原本波形，必要的長度版本仍在發布前處理。播放時固定提前 20 ms 開始子音，讓較明顯的字音靠近拍點；每個數字使用相同提前量，避免變速時前後重疊。
+目前使用試聽後選定的 Maeve 女聲，由 Higgsfield 的 Seed Audio 1.0 產生；1–10、延伸數字與 Rest 提示使用相同聲音。1–4 與 Rest 沿用已確認的試聽錄音與處理方式，離線產生器會比對該組 PCM 的 SHA-256，避免重建時改變已確認的聲音。1–10 會先縮短過長的氣音與輕聲開頭，保留約 25 ms 的子音。two 與 ten 另外保留 t 的起始爆破音；必要的長度版本在發布前以保留音高的時間壓縮做好。播放時固定提前 20 ms 開始子音，讓較明顯的字音靠近拍點；每個數字使用相同提前量，避免變速時前後重疊。
 
 `attack.mjs` 使用低頻與全頻 RMS 的持續上升判定字音主體，並非把第一個非零樣本當成發音。這是可重現的聲學檢查，不能等同於每位聽者的主觀節奏感。背景可參考 [John Morton 的 P-centres 說明](https://johnmorton.co.uk/professional-life/theories/perceptual-centres/)。
 
@@ -34,19 +34,19 @@ npm run preview
 
 這些頁面只供本機測試；正常 `npm run build` 會移除，不會部署。波形驗證不等同於在所有手機、耳機與瀏覽器上逐一聆聽。拍數支援 JavaScript 可精確表示的正整數（至 9,007,199,254,740,991），只按需組合當前數字，音檔快取最多保留 64 組。
 
-v1.3.1 驗證：26 項自動測試通過；Chrome 實際 AAC 解碼後共 36 組、504 次報數，排程誤差最大 0.292 ms，1–10 字音主體與拍點的偏差最大 20.03 ms。預設 120 BPM /4 的 one 到 four 偏差約為 0、+5、0、−10 ms。首次 START 與再次 400 BPM 7/8 都有完整報數訊號。常用語音資料 gzip 為 69,766 bytes；播放時沒有新增起音分析。
+v1.4.1 驗證：27 項自動測試通過；Chrome 實際 AAC 解碼後共 36 組、504 次報數，排程誤差最大 0.137 ms，1–10 字音主體與拍點的偏差最大 20.05 ms。預設 120 BPM /4 的 one 到 four 偏差約為 −10、+5、+5、+5 ms。首次 START 與再次 400 BPM 7/8 都有完整報數訊號，停止與靜音測試無殘留波形。這是本機 Chrome 的結果，首次啟動還包含瀏覽器開啟音訊裝置的時間，不能代表所有裝置的延遲。
 
-重建真人錄音長度版本：在 macOS 安裝開發依賴後，執行 `npm ci --prefix scripts/recorded-voice`、`npm run generate:recorded`。使用已包含授權的原始 OGG 錄音與系統 `afconvert` 製作 AAC；正常建置不需要音訊轉檔工具。
+重建目前 Maeve 語音庫：在 macOS 安裝主專案依賴後執行 `npm run generate:voice`。`scripts/maeve-voice/build.mjs` 讀取已納入倉庫的 WAV 與分段資訊，修剪靜音、統一音量、準備長度版本，再使用系統 `afconvert` 製作 AAC。重建不會呼叫語音服務、不需要憑證，也不下載模型。原始錄音的提示文字、聲音 ID、生成工作 ID、分段範圍與 SHA-256 記錄於 `scripts/maeve-voice/source/manifest.json`。一般網站建置只複製已產生的音檔，連轉檔工具也不需要。
 
-需要重建補充合成語音時，先執行 `npm ci --prefix scripts/voice-generator`，再執行 `npm run generate:voice`。產生器使用 Kokoro-82M 的 `af_sarah` 女聲，在本機產生並修剪靜音、統一音量。首次會下載約 320 MB 模型到已忽略的 `artifacts/voice-model/`；模型與產生器依賴不會部署。生成文字不會上傳到語音服務，語音資訊表記錄模型與聲音的 SHA-256。
+歷史 Kenney／Kokoro 錄音與產生器仍保留以供比較。`npm run generate:recorded` 與直接執行 `scripts/voice-generator/generate.mjs` 都會覆寫 `voice-data.js`，不適用目前以 Maeve 為預設的發布包。
 
 ## 檔案與打包
 
 - `index.html`：介面與語意標籤。
 - `src/app.js`：排程、間隔訓練、休息與輸入驗證。
 - `src/audio.js`：同時鐘的節拍／語音播放、整數報數組合與音量控制。
-- `src/stretch.js`：以 SoundTouch WSOLA 保留音高的時間壓縮，只用於超過 10 的補充合成報數；常用真人報數不需執行此運算。
-- `public/audio/`：真人報數 AAC、分段資訊、首包 JavaScript 及補充語音來源；一般建置不需重新生成。
+- `src/stretch.js`：以 SoundTouch WSOLA 保留音高的時間壓縮；播放時只用於超過 10 的補充報數，常用 1–10 不需執行此運算。離線產生器也使用相同處理。
+- `public/audio/counts-maeve-*v6.*`、`public/audio/voice-data.js`：目前 Maeve 報數 AAC、分段資訊與首包 JavaScript；一般建置不需重新生成。舊語音庫與歷史比較頁保留於原始碼，但不會複製到發布包。
 - `src/styles.css`：原有面板樣式與 Tailwind 建置入口。
 - `tests/`：排程與載入競態測試，以及瀏覽器實際波形和首次啟動檢查頁。
 - `scripts/build.mjs`：產生可部署的 `dist/`。

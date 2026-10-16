@@ -114,8 +114,8 @@
             const timeout = setTimeout(() => controller.abort(), 15000);
             try {
                 const [manifestResponse, waveResponse] = await Promise.all([
-                    fetch('./assets/audio/counts-v2.json', { signal: controller.signal }),
-                    fetch('./assets/audio/counts-extended-v3.m4a', { signal: controller.signal }),
+                    fetch(MetronomeVoiceData.extended.manifest, { signal: controller.signal }),
+                    fetch(MetronomeVoiceData.extended.src, { signal: controller.signal }),
                 ]);
                 if (!manifestResponse.ok || !waveResponse.ok) throw new Error('Voice download failed');
                 const [manifest, data] = await Promise.all([manifestResponse.json(), waveResponse.arrayBuffer()]);

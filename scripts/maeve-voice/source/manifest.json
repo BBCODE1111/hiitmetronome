@@ -1,0 +1,223 @@
+{
+  "voice": "Maeve",
+  "voice_id": "64cf4f1a-61c8-5938-9aea-83d12b2e1d13",
+  "voice_type": "preset",
+  "provider": "Higgsfield",
+  "model": "seed_audio",
+  "sampleRate": 24000,
+  "speechRate": 0,
+  "files": {
+    "common.wav": {
+      "jobId": "83ed8ca5-a1dc-4187-a91a-7a651841aa8a",
+      "prompt": "One, two, three, four. Rest.",
+      "sha256": "9fd1b0fd228933aaa9dc320bc2192cccc3ad5890ae21545d7a9ed4e713782f49",
+      "segments": {
+        "one": [
+          0.45,
+          0.95
+        ],
+        "two": [
+          0.98,
+          1.49
+        ],
+        "three": [
+          1.51,
+          1.99
+        ],
+        "four": [
+          2.01,
+          2.6
+        ],
+        "rest": [
+          2.78,
+          3.4
+        ]
+      }
+    },
+    "units.wav": {
+      "jobId": "0a105530-abda-4b3c-bc74-80e42a5b22ae",
+      "prompt": "Zero. Five. Six. Seven. Eight. Nine. Ten.",
+      "sha256": "1b8caf2a20f1ff3bc596e54110d867bf67884f28ba826d4a25f165b694390ae1",
+      "segments": {
+        "zero": [
+          0.34,
+          1.05
+        ],
+        "five": [
+          1.48,
+          2.12
+        ],
+        "six": [
+          2.34,
+          3.12
+        ],
+        "seven": [
+          3.38,
+          4.15
+        ],
+        "eight": [
+          4.37,
+          4.9
+        ],
+        "nine": [
+          5.27,
+          6.15
+        ],
+        "ten": [
+          6.61,
+          7.25
+        ]
+      }
+    },
+    "teens-a.wav": {
+      "jobId": "286f9381-41d5-4cbd-b4e5-d1b9d3d30f5c",
+      "prompt": "Eleven. Twelve. Thirteen.",
+      "sha256": "df9c63a7ae713b2c8c8498181a6ad9957aa46c8e10a7de3a778f7fa7e95ccacf",
+      "segments": {
+        "eleven": [
+          0.47,
+          1.1
+        ],
+        "twelve": [
+          1.31,
+          1.9
+        ],
+        "thirteen": [
+          2.04,
+          2.78
+        ]
+      }
+    },
+    "teens-b.wav": {
+      "jobId": "a1043861-7912-4482-b9fa-f9dd2bbb1fb7",
+      "prompt": "Fourteen. Fifteen. Sixteen.",
+      "sha256": "cdfc529d2945b9b2b2eec12377e0ebd710e5cbb2dbbad276ad0e5cd3e71d5d60",
+      "segments": {
+        "fourteen": [
+          0.4,
+          1.18
+        ],
+        "fifteen": [
+          1.77,
+          2.52
+        ],
+        "sixteen": [
+          2.96,
+          3.78
+        ]
+      }
+    },
+    "teens-c.wav": {
+      "jobId": "a6e04b08-e1b1-4eff-8429-241d72c40295",
+      "prompt": "Seventeen. Eighteen. Nineteen.",
+      "sha256": "72b06e4e4e7aa6f9bc2b580051ee288ae3b80c7507221688b6ee07c2816ce165",
+      "segments": {
+        "seventeen": [
+          0.31,
+          1.15
+        ],
+        "eighteen": [
+          1.32,
+          2.0
+        ],
+        "nineteen": [
+          2.05,
+          2.78
+        ]
+      }
+    },
+    "tens.wav": {
+      "jobId": "d1736db6-2eac-4029-a4db-b80b04ef98fc",
+      "prompt": "Twenty. Thirty. Forty. Fifty. Sixty. Seventy. Eighty. Ninety.",
+      "sha256": "0a13cb3ee7bffd954994bb57fa7fee6bccc1b2ab78217998970b1771296e7a62",
+      "segments": {
+        "twenty": [
+          0.12,
+          0.7
+        ],
+        "thirty": [
+          0.8,
+          1.25
+        ],
+        "forty": [
+          1.25,
+          1.66
+        ],
+        "fifty": [
+          1.66,
+          2.145
+        ],
+        "sixty": [
+          2.145,
+          2.83
+        ],
+        "seventy": [
+          2.9,
+          3.56
+        ],
+        "eighty": [
+          3.56,
+          4.1
+        ],
+        "ninety": [
+          4.1,
+          4.79
+        ]
+      }
+    },
+    "scales-a.wav": {
+      "jobId": "f0c1908f-9c24-46fb-ae01-1239246d0ba2",
+      "prompt": "Hundred. Thousand. Million.",
+      "sha256": "06e05c7da02e3a8130afa742cee85eb2f2748e19c0ab5757381e986d387669ae",
+      "segments": {
+        "hundred": [
+          0.28,
+          0.94
+        ],
+        "thousand": [
+          1.25,
+          1.98
+        ],
+        "million": [
+          2.22,
+          2.78
+        ]
+      }
+    },
+    "scales-b.wav": {
+      "jobId": "773a6046-b6a4-443f-bcfc-be85a2fdb453",
+      "prompt": "Billion. Trillion. Quadrillion.",
+      "sha256": "8f00f5ebbd9211312ccb5e09dab979d2f2f348a07f0901dc8af56f543f101388",
+      "segments": {
+        "billion": [
+          0.42,
+          1.08
+        ],
+        "trillion": [
+          1.62,
+          2.38
+        ],
+        "quadrillion": [
+          2.78,
+          3.74
+        ]
+      }
+    },
+    "prompts.wav": {
+      "jobId": "8e27f677-a8a4-4edd-849c-dab0176eb323",
+      "prompt": "Next. Speed.",
+      "sha256": "b7e186097a3e10b3af0df0298fa4b512329f6a61b4fe86b2e9ebe40018532a03",
+      "segments": {
+        "next": [
+          0.43,
+          1.14
+        ],
+        "speed": [
+          1.45,
+          2.24
+        ]
+      }
+    }
+  },
+  "approvedCommonWaveSha256": "c995701fbba8fe5190fc02c4dcc516dd641fd91765b603c27c2bb00fc48abbba"
+}

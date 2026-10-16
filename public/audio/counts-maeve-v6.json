@@ -1,0 +1,673 @@
+{
+  "version": 6,
+  "sampleRate": 24000,
+  "voice": "Maeve",
+  "voiceId": "64cf4f1a-61c8-5938-9aea-83d12b2e1d13",
+  "voiceType": "preset",
+  "provider": "Higgsfield",
+  "model": "seed_audio",
+  "sourceManifestSha256": "44d65f9b732ecb76db437bfe31547307e58f9323c1c55daa82b10184414c9dad",
+  "processing": "Offline pitch-preserving duration variants; playbackRate 1",
+  "caps": [
+    null,
+    0.588,
+    0.49,
+    0.42,
+    0.3675,
+    0.32666666666666666,
+    0.27999999999999997,
+    0.245,
+    0.21,
+    0.18375,
+    0.147,
+    0.1176,
+    0.091875,
+    0.0735
+  ],
+  "sha256": "5ccbff8ac4a7ae4637f17c6a5d49942ba8c8d2d56d79347869ed0709c523da0b",
+  "clips": {
+    "one": [
+      {
+        "cap": null,
+        "offset": 0,
+        "length": 11016
+      },
+      {
+        "cap": 0.42,
+        "offset": 11976,
+        "length": 9862
+      },
+      {
+        "cap": 0.3675,
+        "offset": 22798,
+        "length": 8756
+      },
+      {
+        "cap": 0.32666666666666666,
+        "offset": 32514,
+        "length": 7790
+      },
+      {
+        "cap": 0.27999999999999997,
+        "offset": 41264,
+        "length": 6510
+      },
+      {
+        "cap": 0.245,
+        "offset": 48734,
+        "length": 5847
+      },
+      {
+        "cap": 0.21,
+        "offset": 55541,
+        "length": 4878
+      },
+      {
+        "cap": 0.18375,
+        "offset": 61379,
+        "length": 4394
+      },
+      {
+        "cap": 0.147,
+        "offset": 66733,
+        "length": 3451
+      },
+      {
+        "cap": 0.1176,
+        "offset": 71144,
+        "length": 2519
+      },
+      {
+        "cap": 0.091875,
+        "offset": 74623,
+        "length": 2039
+      },
+      {
+        "cap": 0.0735,
+        "offset": 77622,
+        "length": 1702
+      }
+    ],
+    "two": [
+      {
+        "cap": null,
+        "offset": 80284,
+        "length": 9538
+      },
+      {
+        "cap": 0.3675,
+        "offset": 90782,
+        "length": 8711
+      },
+      {
+        "cap": 0.32666666666666666,
+        "offset": 100453,
+        "length": 7751
+      },
+      {
+        "cap": 0.27999999999999997,
+        "offset": 109164,
+        "length": 6550
+      },
+      {
+        "cap": 0.245,
+        "offset": 116674,
+        "length": 5865
+      },
+      {
+        "cap": 0.21,
+        "offset": 123499,
+        "length": 4911
+      },
+      {
+        "cap": 0.18375,
+        "offset": 129370,
+        "length": 4299
+      },
+      {
+        "cap": 0.147,
+        "offset": 134629,
+        "length": 3418
+      },
+      {
+        "cap": 0.1176,
+        "offset": 139007,
+        "length": 2491
+      },
+      {
+        "cap": 0.091875,
+        "offset": 142458,
+        "length": 1822
+      },
+      {
+        "cap": 0.0735,
+        "offset": 145240,
+        "length": 1413
+      }
+    ],
+    "three": [
+      {
+        "cap": null,
+        "offset": 147613,
+        "length": 9361
+      },
+      {
+        "cap": 0.3675,
+        "offset": 157934,
+        "length": 8726
+      },
+      {
+        "cap": 0.32666666666666666,
+        "offset": 167620,
+        "length": 7752
+      },
+      {
+        "cap": 0.27999999999999997,
+        "offset": 176332,
+        "length": 6413
+      },
+      {
+        "cap": 0.245,
+        "offset": 183705,
+        "length": 5878
+      },
+      {
+        "cap": 0.21,
+        "offset": 190543,
+        "length": 4916
+      },
+      {
+        "cap": 0.18375,
+        "offset": 196419,
+        "length": 4315
+      },
+      {
+        "cap": 0.147,
+        "offset": 201694,
+        "length": 3477
+      },
+      {
+        "cap": 0.1176,
+        "offset": 206131,
+        "length": 2566
+      },
+      {
+        "cap": 0.091875,
+        "offset": 209657,
+        "length": 1823
+      },
+      {
+        "cap": 0.0735,
+        "offset": 212440,
+        "length": 1404
+      }
+    ],
+    "four": [
+      {
+        "cap": null,
+        "offset": 214804,
+        "length": 9996
+      },
+      {
+        "cap": 0.3675,
+        "offset": 225760,
+        "length": 8699
+      },
+      {
+        "cap": 0.32666666666666666,
+        "offset": 235419,
+        "length": 7789
+      },
+      {
+        "cap": 0.27999999999999997,
+        "offset": 244168,
+        "length": 6361
+      },
+      {
+        "cap": 0.245,
+        "offset": 251489,
+        "length": 5870
+      },
+      {
+        "cap": 0.21,
+        "offset": 258319,
+        "length": 4992
+      },
+      {
+        "cap": 0.18375,
+        "offset": 264271,
+        "length": 4369
+      },
+      {
+        "cap": 0.147,
+        "offset": 269600,
+        "length": 3480
+      },
+      {
+        "cap": 0.1176,
+        "offset": 274040,
+        "length": 2646
+      },
+      {
+        "cap": 0.091875,
+        "offset": 277646,
+        "length": 1945
+      },
+      {
+        "cap": 0.0735,
+        "offset": 280551,
+        "length": 1412
+      }
+    ],
+    "rest": [
+      {
+        "cap": null,
+        "offset": 282923,
+        "length": 13561
+      }
+    ]
+  },
+  "extra": {
+    "src": "./assets/audio/counts-maeve-extra-v6.m4a",
+    "clips": {
+      "five": [
+        {
+          "cap": null,
+          "offset": 0,
+          "length": 11906
+        },
+        {
+          "cap": 0.49,
+          "offset": 12866,
+          "length": 11568
+        },
+        {
+          "cap": 0.42,
+          "offset": 25394,
+          "length": 9993
+        },
+        {
+          "cap": 0.3675,
+          "offset": 36347,
+          "length": 8732
+        },
+        {
+          "cap": 0.32666666666666666,
+          "offset": 46039,
+          "length": 7795
+        },
+        {
+          "cap": 0.27999999999999997,
+          "offset": 54794,
+          "length": 6501
+        },
+        {
+          "cap": 0.245,
+          "offset": 62255,
+          "length": 5876
+        },
+        {
+          "cap": 0.21,
+          "offset": 69091,
+          "length": 4908
+        },
+        {
+          "cap": 0.18375,
+          "offset": 74959,
+          "length": 4177
+        },
+        {
+          "cap": 0.147,
+          "offset": 80096,
+          "length": 3420
+        },
+        {
+          "cap": 0.1176,
+          "offset": 84476,
+          "length": 2379
+        },
+        {
+          "cap": 0.091875,
+          "offset": 87815,
+          "length": 1825
+        },
+        {
+          "cap": 0.0735,
+          "offset": 90600,
+          "length": 1414
+        }
+      ],
+      "six": [
+        {
+          "cap": null,
+          "offset": 92974,
+          "length": 12021
+        },
+        {
+          "cap": 0.49,
+          "offset": 105955,
+          "length": 11641
+        },
+        {
+          "cap": 0.42,
+          "offset": 118556,
+          "length": 10006
+        },
+        {
+          "cap": 0.3675,
+          "offset": 129522,
+          "length": 8747
+        },
+        {
+          "cap": 0.32666666666666666,
+          "offset": 139229,
+          "length": 7802
+        },
+        {
+          "cap": 0.27999999999999997,
+          "offset": 147991,
+          "length": 6433
+        },
+        {
+          "cap": 0.245,
+          "offset": 155384,
+          "length": 5880
+        },
+        {
+          "cap": 0.21,
+          "offset": 162224,
+          "length": 5014
+        },
+        {
+          "cap": 0.18375,
+          "offset": 168198,
+          "length": 4382
+        },
+        {
+          "cap": 0.147,
+          "offset": 173540,
+          "length": 3422
+        },
+        {
+          "cap": 0.1176,
+          "offset": 177922,
+          "length": 2377
+        },
+        {
+          "cap": 0.091875,
+          "offset": 181259,
+          "length": 1824
+        },
+        {
+          "cap": 0.0735,
+          "offset": 184043,
+          "length": 1511
+        }
+      ],
+      "seven": [
+        {
+          "cap": null,
+          "offset": 186514,
+          "length": 11587
+        },
+        {
+          "cap": 0.42,
+          "offset": 199061,
+          "length": 9914
+        },
+        {
+          "cap": 0.3675,
+          "offset": 209935,
+          "length": 8756
+        },
+        {
+          "cap": 0.32666666666666666,
+          "offset": 219651,
+          "length": 7796
+        },
+        {
+          "cap": 0.27999999999999997,
+          "offset": 228407,
+          "length": 6466
+        },
+        {
+          "cap": 0.245,
+          "offset": 235833,
+          "length": 5869
+        },
+        {
+          "cap": 0.21,
+          "offset": 242662,
+          "length": 4916
+        },
+        {
+          "cap": 0.18375,
+          "offset": 248538,
+          "length": 4408
+        },
+        {
+          "cap": 0.147,
+          "offset": 253906,
+          "length": 3478
+        },
+        {
+          "cap": 0.1176,
+          "offset": 258344,
+          "length": 2499
+        },
+        {
+          "cap": 0.091875,
+          "offset": 261803,
+          "length": 1945
+        },
+        {
+          "cap": 0.0735,
+          "offset": 264708,
+          "length": 1518
+        }
+      ],
+      "eight": [
+        {
+          "cap": null,
+          "offset": 267186,
+          "length": 11422
+        },
+        {
+          "cap": 0.42,
+          "offset": 279568,
+          "length": 9907
+        },
+        {
+          "cap": 0.3675,
+          "offset": 290435,
+          "length": 8754
+        },
+        {
+          "cap": 0.32666666666666666,
+          "offset": 300149,
+          "length": 7755
+        },
+        {
+          "cap": 0.27999999999999997,
+          "offset": 308864,
+          "length": 6517
+        },
+        {
+          "cap": 0.245,
+          "offset": 316341,
+          "length": 5850
+        },
+        {
+          "cap": 0.21,
+          "offset": 323151,
+          "length": 4906
+        },
+        {
+          "cap": 0.18375,
+          "offset": 329017,
+          "length": 4391
+        },
+        {
+          "cap": 0.147,
+          "offset": 334368,
+          "length": 3383
+        },
+        {
+          "cap": 0.1176,
+          "offset": 338711,
+          "length": 2370
+        },
+        {
+          "cap": 0.091875,
+          "offset": 342041,
+          "length": 1820
+        },
+        {
+          "cap": 0.0735,
+          "offset": 344821,
+          "length": 1429
+        }
+      ],
+      "nine": [
+        {
+          "cap": null,
+          "offset": 347210,
+          "length": 18115
+        },
+        {
+          "cap": 0.588,
+          "offset": 366285,
+          "length": 14019
+        },
+        {
+          "cap": 0.49,
+          "offset": 381264,
+          "length": 11748
+        },
+        {
+          "cap": 0.42,
+          "offset": 393972,
+          "length": 9713
+        },
+        {
+          "cap": 0.3675,
+          "offset": 404645,
+          "length": 8728
+        },
+        {
+          "cap": 0.32666666666666666,
+          "offset": 414333,
+          "length": 7798
+        },
+        {
+          "cap": 0.27999999999999997,
+          "offset": 423091,
+          "length": 6696
+        },
+        {
+          "cap": 0.245,
+          "offset": 430747,
+          "length": 5870
+        },
+        {
+          "cap": 0.21,
+          "offset": 437577,
+          "length": 4909
+        },
+        {
+          "cap": 0.18375,
+          "offset": 443446,
+          "length": 4410
+        },
+        {
+          "cap": 0.147,
+          "offset": 448816,
+          "length": 3462
+        },
+        {
+          "cap": 0.1176,
+          "offset": 453238,
+          "length": 2519
+        },
+        {
+          "cap": 0.091875,
+          "offset": 456717,
+          "length": 2039
+        },
+        {
+          "cap": 0.0735,
+          "offset": 459716,
+          "length": 1559
+        }
+      ],
+      "ten": [
+        {
+          "cap": null,
+          "offset": 462235,
+          "length": 11008
+        },
+        {
+          "cap": 0.42,
+          "offset": 474203,
+          "length": 9846
+        },
+        {
+          "cap": 0.3675,
+          "offset": 485009,
+          "length": 8753
+        },
+        {
+          "cap": 0.32666666666666666,
+          "offset": 494722,
+          "length": 7743
+        },
+        {
+          "cap": 0.27999999999999997,
+          "offset": 503425,
+          "length": 6354
+        },
+        {
+          "cap": 0.245,
+          "offset": 510739,
+          "length": 5872
+        },
+        {
+          "cap": 0.21,
+          "offset": 517571,
+          "length": 4915
+        },
+        {
+          "cap": 0.18375,
+          "offset": 523446,
+          "length": 4256
+        },
+        {
+          "cap": 0.147,
+          "offset": 528662,
+          "length": 3419
+        },
+        {
+          "cap": 0.1176,
+          "offset": 533041,
+          "length": 2379
+        },
+        {
+          "cap": 0.091875,
+          "offset": 536380,
+          "length": 1825
+        },
+        {
+          "cap": 0.0735,
+          "offset": 539165,
+          "length": 1412
+        }
+      ]
+    },
+    "sha256": "b8211651e817dfe342c61731efeb9e7bc14799188143573f10b5a7c91390df01"
+  },
+  "extended": {
+    "manifest": "./assets/audio/counts-maeve-words-v6.json",
+    "src": "./assets/audio/counts-maeve-words-v6.m4a",
+    "sha256": "6b48e04e4456d78e10cad17561416f0eba5208d2f78b12292f7fadad6527a4b4"
+  }
+}
