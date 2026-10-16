@@ -11,8 +11,13 @@ await copyFile('src/app.js', 'dist/assets/app.js');
 await copyFile('src/audio.js', 'dist/assets/audio.js');
 await build({ entryPoints: ['src/stretch.js'], outfile: 'dist/assets/stretch.js', bundle: true, format: 'iife', globalName: 'MetronomeStretch', target: 'es2020', sourcemap: true, legalComments: 'inline' });
 await copyFile('node_modules/@soundtouchjs/core/LICENSE', 'dist/licenses/SoundTouch-MPL-2.0.txt');
-await cp('public/audio', 'dist/assets/audio', { recursive: true });
-await cp('public/voice-preview', 'dist/voice-preview', { recursive: true });
+await mkdir('dist/assets/audio', {recursive:true});
+// Ship the active voice only; historical comparison and recording banks stay
+// in source control without inflating each release.
+for (const file of ['voice-data.js','counts-maeve-v6.json','counts-maeve-v6.m4a',
+  'counts-maeve-extra-v6.m4a','counts-maeve-words-v6.json','counts-maeve-words-v6.m4a']) {
+  await copyFile(`public/audio/${file}`, `dist/assets/audio/${file}`);
+}
 await copyFile('public/favicon.svg', 'dist/favicon.svg');
 await copyFile('README.md', 'dist/README.md');
 await cp('docs/images', 'dist/docs/images', { recursive: true });
