@@ -98,12 +98,12 @@ function readBeats() {
 function updateSigUI() {
     const value = readBeats();
     sigNumerator.setAttribute('aria-invalid', String(value === null));
-    document.getElementById('meterError').textContent = value === null ? '請輸入大於 0 的整數拍數（不可有小數）' : '';
+    document.getElementById('meterError').textContent = value === null ? 'Enter a positive whole number of beats.' : '';
     if (value !== null) {
         signatureDisplay.textContent = `${value} / ${sigDenominator.value} TIME`;
         if (value > 4 && sound) sound.ready(value).catch(() => {
             if (isPlaying && readBeats() === value) {
-                document.getElementById('meterError').textContent = '拍數語音準備失敗；目前拍號繼續播放，請停止後重試。';
+                document.getElementById('meterError').textContent = 'Count-in unavailable. The current meter will keep playing; stop and retry.';
             }
         });
     }
@@ -291,7 +291,7 @@ async function start() {
 
     updateSigUI();
     if (readBeats() === null) {
-        infoBar.textContent = '請先修正 Beats / MSR 的整數拍數';
+        infoBar.textContent = 'Enter a positive whole number in Beats / MSR.';
         sigNumerator.focus();
         return;
     }
@@ -322,7 +322,7 @@ async function start() {
     } catch {
         if (thisSession !== session || !isPlaying) return;
         stop();
-        infoBar.textContent = 'AUDIO UNAVAILABLE — 請確認網路與音訊權限，再按 START 重試';
+        infoBar.textContent = 'AUDIO UNAVAILABLE — Check your connection and audio permissions, then press START to retry.';
         return;
     }
 

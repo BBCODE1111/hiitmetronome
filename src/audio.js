@@ -83,15 +83,16 @@
 
     const tones = ['electronic', 'mechanical', 'rimshot', 'cowbell'];
 
-    // Original synthesized sounds, rendered once per device rate. Every tone
-    // ends before the next 400 BPM eighth-note cue's 20 ms articulation lead.
+    // Original synthesized sounds, rendered once per device rate. A fuller
+    // 55 ms body raises loudness without increasing the .94 peak ceiling.
+    // End by the next 400 BPM eighth-note cue's 20 ms articulation lead.
     function clickPCM(sampleRate, tone, strong) {
-        const pcm = new Float32Array(Math.ceil(sampleRate * .05));
+        const pcm = new Float32Array(Math.floor(sampleRate * .055));
         const pitch = strong ? 1.22 : 1;
         let noiseState = 173;
         for (let i = 0; i < pcm.length; i++) {
             const t = i / sampleRate;
-            const sine = (hz, decay) => Math.sin(2 * Math.PI * hz * pitch * t) * Math.exp(-t / decay);
+            const sine = (hz, decay) => Math.sin(2 * Math.PI * hz * pitch * t) * Math.exp(-t / (decay * 8));
             noiseState = (Math.imul(noiseState, 1664525) + 1013904223) | 0;
             const noise = (noiseState / 2147483648) * Math.exp(-t / .002);
             let sample;
