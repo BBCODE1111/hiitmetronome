@@ -53,8 +53,8 @@ function createApp({ audio = true, loading = false, failed = false, sampleRate =
       const voice = { playbackRate: { value: 1 }, connect() {}, disconnect() {},
         start(time) {
           this.time = time;
-          // Production click buffers are 50 ms; the shortest recorded voice is 65 ms.
-          (this.buffer.duration <= .0501 ? clicks : voices).push(this);
+          // Production click buffers are 55 ms; the shortest recorded voice is 65 ms.
+          (this.buffer.duration <= .0551 ? clicks : voices).push(this);
         }, stop() { this.cancelled = true; } };
       return voice;
     }
