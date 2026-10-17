@@ -14,12 +14,13 @@ document.getElementById('run').onclick = async () => {
   let cases = 0, beats = 0, maxOffset = 0, maxPeak = 0, maxBodyOffset = 0;
   const defaultBodyOffsets = {};
   try {
-    for (const rate of [44100, 48000]) for (const bpm of [30, 60, 90, 120, 150, 180, 240, 300, 400]) for (const note of [4, 8]) {
+    for (const tone of MetronomeAudio.tones) for (const rate of [44100, 48000]) for (const bpm of [30, 60, 90, 120, 150, 180, 240, 300, 400]) for (const note of [4, 8]) {
       const duration = 60 / bpm * (note === 8 ? .5 : 1);
       const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 17, 21, 101, Number.MAX_SAFE_INTEGER];
       const ctx = new OfflineAudioContext(2, Math.ceil((.1 + duration * numbers.length) * rate), rate);
       const voice = new MetronomeAudio.Engine(ctx), click = new MetronomeAudio.Engine(ctx);
       await voice.ready(Number.MAX_SAFE_INTEGER);
+      click.setTone(tone);
       const merger = ctx.createChannelMerger(2);
       merger.connect(ctx.destination);
       voice.master.disconnect(); voice.master.connect(merger, 0, 0);
@@ -60,8 +61,9 @@ document.getElementById('run').onclick = async () => {
         beats++;
       }
       cases++;
-      output.textContent = `Running: ${cases}/36 renders, ${beats} spoken beats`;
+      output.textContent = `Running: ${cases}/144 renders, ${beats} spoken beats`;
     }
+    if(maxPeak >= .98) throw new Error(`Output lacks clean peak headroom: ${maxPeak}`);
     // Actual PCM mute and cancellation, not only method-call assertions.
     for (const action of ['mute', 'stop']) {
       const ctx = new OfflineAudioContext(1, 48000, 48000);
@@ -71,7 +73,7 @@ document.getElementById('run').onclick = async () => {
       const pcm = (await ctx.startRendering()).getChannelData(0);
       if(pcm.some(sample => sample !== 0)) throw new Error(`${action} emitted audio`);
     }
-    output.textContent = JSON.stringify({status:'PASS', renders:cases, spokenBeats:beats, maxSchedulingErrorMs:maxOffset, maxRecordedSpeechBodyOffsetMs:maxBodyOffset, default120BodyOffsetsMs:defaultBodyOffsets, maxCombinedPeak:maxPeak, mutedPCM:'silent', stoppedPCM:'silent', sampleRates:[44100,48000]}, null, 2);
+    output.textContent = JSON.stringify({status:'PASS', renders:cases, spokenBeats:beats, maxSchedulingErrorMs:maxOffset, maxRecordedSpeechBodyOffsetMs:maxBodyOffset, default120BodyOffsetsMs:defaultBodyOffsets, maxCombinedPeak:maxPeak, mutedPCM:'silent', stoppedPCM:'silent', sampleRates:[44100,48000], tones:MetronomeAudio.tones}, null, 2);
   } catch(error) { output.textContent = `FAIL: ${error.stack}`; }
 };
 </script></html>
