@@ -1,6 +1,6 @@
 {
   "name": "intervalmetronome",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "private": true,
   "description": "Interval metronome for guitar and instrument practice",
   "type": "module",

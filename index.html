@@ -7,11 +7,11 @@
     <meta name="description" content="吉他與樂器練習用間隔節拍器，支援漸進加速、休息間隔、拍號與語音提示。">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <meta name="theme-color" content="#121212">
-    <link rel="stylesheet" href="./assets/styles.css">
-    <script src="./assets/audio/voice-data.js?v=1.4.1" defer></script>
-    <script src="./assets/stretch.js?v=1.4.1" defer></script>
-    <script src="./assets/audio.js?v=1.4.1" defer></script>
-    <script src="./assets/app.js?v=1.4.1" defer></script>
+    <link rel="stylesheet" href="./assets/styles.css?v=1.5.0">
+    <script src="./assets/audio/voice-data.js?v=1.5.0" defer></script>
+    <script src="./assets/stretch.js?v=1.5.0" defer></script>
+    <script src="./assets/audio.js?v=1.5.0" defer></script>
+    <script src="./assets/app.js?v=1.5.0" defer></script>
 </head>
 <body>
     <noscript>請啟用 JavaScript 才能使用節拍器。</noscript>
@@ -49,9 +49,10 @@
                 <div class="control-group">
                     <div class="label-text mb-2 text-left">Master Volume</div>
                     <div class="flex items-center gap-2">
-                        <input type="range" id="volumeSlider" aria-label="Master volume" min="0" max="100" value="80">
+                        <input type="range" id="volumeSlider" aria-label="Master volume" aria-describedby="volumeHint" min="0" max="100" value="80">
                         <span id="volVal" class="text-[0.65rem] font-bold text-gray-500">80%</span>
                     </div>
+                    <div id="volumeHint" class="sound-hint volume-hint">靜音 ↔ 最大音量</div>
                 </div>
             </div>
 
@@ -71,6 +72,17 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="control-group tone-group">
+            <label for="toneSelect" class="label-text">Tone · 節拍音色</label>
+            <select id="toneSelect" aria-label="節拍音色" class="tone-select">
+                <option value="electronic">電子嗶聲 · 清楚明亮</option>
+                <option value="mechanical">機械木聲 · 乾脆溫暖</option>
+                <option value="rimshot">邊擊 · 銳利穿透</option>
+                <option value="cowbell">牛鈴 · 飽滿響亮</option>
+            </select>
+            <span class="sound-hint">播放中也能切換</span>
         </div>
 
         <!-- INTERVAL TRAINING ENGINE -->
