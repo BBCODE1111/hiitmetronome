@@ -61,7 +61,7 @@ document.getElementById('run').onclick = async () => {
         beats++;
       }
       cases++;
-      output.textContent = `Running: ${cases}/144 renders, ${beats} spoken beats`;
+      output.textContent = `Running: ${cases}/${MetronomeAudio.tones.length * 36} renders, ${beats} spoken beats`;
     }
     if(maxPeak >= .98) throw new Error(`Output lacks clean peak headroom: ${maxPeak}`);
     // Actual PCM mute and cancellation, not only method-call assertions.

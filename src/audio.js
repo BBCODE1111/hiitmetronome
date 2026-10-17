@@ -81,26 +81,34 @@
         return extraLoading;
     }
 
-    const tones = ['electronic', 'mechanical', 'rimshot', 'cowbell'];
+    const tones = ['rimshot', 'woodblock', 'clave', 'electronic', 'mechanical', 'cowbell'];
 
-    // Original synthesized sounds, rendered once per device rate. Every tone
-    // ends before the next 400 BPM eighth-note cue's 20 ms articulation lead.
+    // Original synthesized sounds, rendered once per device rate. A fuller
+    // 55 ms body raises loudness without increasing the .94 peak ceiling.
+    // End by the next 400 BPM eighth-note cue's 20 ms articulation lead.
     function clickPCM(sampleRate, tone, strong) {
-        const pcm = new Float32Array(Math.ceil(sampleRate * .05));
+        const pcm = new Float32Array(Math.floor(sampleRate * .055));
         const pitch = strong ? 1.22 : 1;
         let noiseState = 173;
         for (let i = 0; i < pcm.length; i++) {
             const t = i / sampleRate;
-            const sine = (hz, decay) => Math.sin(2 * Math.PI * hz * pitch * t) * Math.exp(-t / decay);
+            const sine = (hz, decay) => Math.sin(2 * Math.PI * hz * pitch * t) * Math.exp(-t / (decay * 8));
             noiseState = (Math.imul(noiseState, 1664525) + 1013904223) | 0;
             const noise = (noiseState / 2147483648) * Math.exp(-t / .002);
+            const hit = (hz, decay) => Math.sin(2 * Math.PI * hz * pitch * t) * Math.exp(-t / decay);
             let sample;
             switch (tone) {
                 case 'mechanical':
                     sample = sine(780, .011) + .55 * sine(1960, .008) + .35 * sine(3350, .005) + .25 * noise;
                     break;
                 case 'rimshot':
-                    sample = sine(1720, .012) + .65 * sine(2310, .009) + .4 * sine(3840, .006) + .65 * noise;
+                    sample = hit(1780, .042) + .28 * hit(2830, .018) + .18 * hit(4150, .004) + .22 * noise;
+                    break;
+                case 'woodblock':
+                    sample = hit(1380, .023) + .40 * hit(2330, .016) + .18 * hit(4250, .0025) + .12 * noise;
+                    break;
+                case 'clave':
+                    sample = hit(2680, .019) + .14 * hit(5360, .003) + .08 * noise;
                     break;
                 case 'cowbell':
                     sample = sine(640, .021) + .85 * sine(945, .019) + .3 * sine(1280, .012) + .2 * sine(1890, .01);
@@ -131,9 +139,9 @@
             this.master.connect(context.destination);
             this.active = new Set();
             this.cache = new Map();
-            this.tone = 'electronic';
+            this.tone = 'rimshot';
             this.clickBuffers = new Map();
-            // Eight tiny buffers, shared by every beat, including live switches.
+            // A small fixed bank, shared by every beat, including live switches.
             for (const tone of tones) for (const strong of [false, true]) {
                 const pcm = clickPCM(context.sampleRate || 48000, tone, strong);
                 const buffer = context.createBuffer(1, pcm.length, context.sampleRate || 48000);
@@ -153,7 +161,7 @@
             gain.linearRampToValueAtTime(level * level, now + .005);
         }
 
-        setTone(tone) { this.tone = tones.includes(tone) ? tone : 'electronic'; }
+        setTone(tone) { this.tone = tones.includes(tone) ? tone : 'rimshot'; }
 
         async ready(count = 4) {
             await preload(this.context);

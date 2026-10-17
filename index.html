@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>復古類比間隔節拍器 - 專業旗艦版</title>
-    <meta name="description" content="吉他與樂器練習用間隔節拍器，支援漸進加速、休息間隔、拍號與語音提示。">
+    <title>Interval Metronome — Studio Edition</title>
+    <meta name="description" content="An interval metronome for instrument practice, with gradual tempo increases, rest intervals, custom meters and spoken count-ins.">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <meta name="theme-color" content="#121212">
-    <link rel="stylesheet" href="./assets/styles.css?v=1.5.0">
-    <script src="./assets/audio/voice-data.js?v=1.5.0" defer></script>
-    <script src="./assets/stretch.js?v=1.5.0" defer></script>
-    <script src="./assets/audio.js?v=1.5.0" defer></script>
-    <script src="./assets/app.js?v=1.5.0" defer></script>
+    <link rel="stylesheet" href="./assets/styles.css?v=1.5.1">
+    <script src="./assets/audio/voice-data.js?v=1.5.1" defer></script>
+    <script src="./assets/stretch.js?v=1.5.1" defer></script>
+    <script src="./assets/audio.js?v=1.5.1" defer></script>
+    <script src="./assets/app.js?v=1.5.1" defer></script>
 </head>
 <body>
-    <noscript>請啟用 JavaScript 才能使用節拍器。</noscript>
+    <noscript>Please enable JavaScript to use the metronome.</noscript>
 
     <main class="hardware-case" aria-label="Interval Metronome">
         <!-- TOP BAR -->
@@ -52,7 +52,7 @@
                         <input type="range" id="volumeSlider" aria-label="Master volume" aria-describedby="volumeHint" min="0" max="100" value="80">
                         <span id="volVal" class="text-[0.65rem] font-bold text-gray-500">80%</span>
                     </div>
-                    <div id="volumeHint" class="sound-hint volume-hint">靜音 ↔ 最大音量</div>
+                    <div id="volumeHint" class="sound-hint volume-hint">Mute ↔ Full volume</div>
                 </div>
             </div>
 
@@ -75,14 +75,20 @@
         </div>
 
         <div class="control-group tone-group">
-            <label for="toneSelect" class="label-text">Tone · 節拍音色</label>
-            <select id="toneSelect" aria-label="節拍音色" class="tone-select">
-                <option value="electronic">電子嗶聲 · 清楚明亮</option>
-                <option value="mechanical">機械木聲 · 乾脆溫暖</option>
-                <option value="rimshot">邊擊 · 銳利穿透</option>
-                <option value="cowbell">牛鈴 · 飽滿響亮</option>
+            <label for="toneSelect" class="label-text">Tone</label>
+            <select id="toneSelect" aria-label="Metronome tone" class="tone-select">
+                <optgroup label="Punchy attack">
+                    <option value="rimshot" selected>Rimshot · Crack</option>
+                    <option value="woodblock">Woodblock · Knock</option>
+                    <option value="clave">Clave · Cut</option>
+                </optgroup>
+                <optgroup label="Classic">
+                    <option value="electronic">Electronic · Bright</option>
+                    <option value="mechanical">Mechanical · Warm</option>
+                    <option value="cowbell">Cowbell · Full</option>
+                </optgroup>
             </select>
-            <span class="sound-hint">播放中也能切換</span>
+            <span class="sound-hint">Switch while playing</span>
         </div>
 
         <!-- INTERVAL TRAINING ENGINE -->
