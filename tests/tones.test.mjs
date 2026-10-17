@@ -76,11 +76,23 @@ const v150Energy = {
   "96000:cowbell:true": 0.0022620166918448036
 };
 
-test("all four tones gain at least 5 dB per beat over 1.5.0 without exceeding the fast-tempo window", () => {
-  for(const rate of [24000,44100,48000,96000]) for(const tone of tones) for(const strong of [false,true]) {
+test("existing tones gain at least 5 dB per beat over 1.5.0 without exceeding the fast-tempo window", () => {
+  for(const rate of [24000,44100,48000,96000]) for(const tone of ['rimshot','electronic','mechanical','cowbell']) for(const strong of [false,true]) {
     const pcm=clickPCM(rate,tone,strong);
     const energy=pcm.reduce((sum,v)=>sum+v*v,0)/rate;
     assert.ok(energy >= v150Energy[`${rate}:${tone}:${strong}`]*10**.5, `${tone} must be audibly louder than 1.5.0`);
     assert.ok(pcm.length/rate <= .075-.02+1e-9, 'no overlap with the next 400 BPM /8 consonant');
+  }
+});
+
+
+test('attack presets put a clear peak and meaningful energy at the front of each beat', () => {
+  for(const rate of [24000,44100,48000,96000]) for(const [tone,minFraction] of [['rimshot',.20],['woodblock',.30],['clave',.35]]) for(const strong of [false,true]) {
+    const pcm=clickPCM(rate,tone,strong);
+    const energy=data=>data.reduce((sum,v)=>sum+v*v,0);
+    const front=pcm.slice(0,Math.floor(rate*.005));
+    const earlyPeak=Math.max(...pcm.slice(0,Math.floor(rate*.003)).map(Math.abs));
+    assert.ok(earlyPeak>.88, `${tone} delivers its impact within 3 ms`);
+    assert.ok(energy(front)/energy(pcm)>minFraction, `${tone} has a front-loaded attack, not just a louder tail`);
   }
 });

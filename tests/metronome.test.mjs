@@ -378,7 +378,7 @@ test('the entire bundled core voice transfer stays below 100 KB with gzip', () =
 });
 
 
-test('four tones switch while running without resetting the beat clock or voice pitch', async () => {
+test('tones switch while running without resetting the beat clock or voice pitch', async () => {
   const app = createApp();
   app.run("toneSelect.value = 'mechanical'; intervalEnableToggle.checked = false; updateBPM(400); sigDenominator.value = '8'");
   await app.run('start()');
@@ -390,7 +390,7 @@ test('four tones switch while running without resetting the beat clock or voice 
     assert.notDeepEqual(first.getChannelData(0), app.clicks.at(-1).buffer.getChannelData(0));
   }
   assertAligned(app);
-  assert.equal(app.run('sound.clickBuffers.size'), 8, 'live changes reuse the prepared tone bank');
+  assert.equal(app.run('sound.clickBuffers.size'), 12, 'live changes reuse the prepared tone bank');
   app.run('stop()');
   assert.ok([...app.clicks, ...app.voices].every(source => source.cancelled));
 });
