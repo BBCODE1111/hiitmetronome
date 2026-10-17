@@ -2,6 +2,8 @@
 
 ## 1.5.1
 
+- Add a Punchy attack group with Rimshot, Woodblock and Clave; make Rimshot the default and retain the three Classic tones.
+
 - Increase beat loudness with a fuller 55 ms sound while retaining the clean peak ceiling and fast-tempo spacing.
 - Use English throughout the interface, tone choices and status messages.
 

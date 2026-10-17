@@ -25,7 +25,7 @@
 | **柔和女聲預備拍** | 跟著 Maeve 女聲的 one、two、three、four 進入節奏；開始與變速時的提示可分別開關。 |
 | **自動逐步加速** | 設定每幾小節增加多少 BPM，達到目標後維持速度。 |
 | **練習與休息交替** | 設定每加速幾次休息一次，以及休息秒數，結束後繼續練習。 |
-| **四種節拍音色** | 電子嗶聲、機械木聲、邊擊、牛鈴，播放中也能切換。 |
+| **六種節拍音色** | Rimshot、Woodblock、Clave 加上三款 Classic 音色，播放中也能切換。 |
 | **寬範圍音量與節拍燈** | 從靜音、輕聲到響亮拍點，搭配閃爍的 PULSE 燈掌握拍點。 |
 
 ## 三步開始
@@ -38,7 +38,7 @@
 
 在 **Tone** 選擇Electronic、Mechanical、Rimshot 或 Cowbell。樂器聲較大時，可先試 Rimshot 或 Cowbell，再調整 **Master Volume**；100% 使用完整的乾淨輸出範圍，低音量端可以細調。介面以英文顯示，拍點增加聲音主體的能量，維持峰值餘量。
 
-音色以經典電子與機械節拍器常見類型為參考，皆為本專案原創合成，沒有使用品牌採樣。參考 [KORG KDM-3 的機械聲、邊擊與牛鈴](https://www.korg.com/us/products/tuners/kdm_3/) 及 [BOSS DB-90 的多音色設計](https://www.boss.info/global/products/db-90/)。
+音色以經典電子與機械節拍器常見類型為參考，皆為本專案原創合成，沒有使用品牌採樣。參考 [KORG KDM-3 的機械聲、邊擊與牛鈴](https://www.korg.com/us/products/tuners/kdm_3/) 、[BOSS DB-90 的多音色設計](https://www.boss.info/global/products/db-90/) 及 [Roland TR-808 的 Rim Shot / Claves](https://support.roland.com/hc/en-us/articles/201963539-TR-808-Technical-Specifications)。
 
 軟體混音保留峰值餘量，避免拍點與 Maeve 語音相加時削波。實際最大聲量仍取決於裝置、系統音量與喇叭；改版後請從適合自己的音量開始調整。
 
