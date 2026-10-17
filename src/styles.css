@@ -283,3 +283,9 @@ label { position: relative; }
     .hardware-case > .grid-cols-2 { grid-template-columns: 1fr; }
     .hardware-case > div:first-child { flex-wrap: wrap; gap: 8px; }
 }
+
+.tone-group { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.tone-select { flex: 1; min-width: 165px; background: #111; color: var(--accent-gold); border: 1px solid #555; border-radius: 4px; padding: 8px; font: inherit; font-size: .75rem; }
+.sound-hint { color: #aaa; font-size: .6rem; }
+.volume-hint { margin-top: 8px; text-align: left; }
+#volVal { min-width: 4ch; text-align: right; }
