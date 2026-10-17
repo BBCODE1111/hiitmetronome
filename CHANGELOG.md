@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1
+
+- Increase beat loudness with a fuller 55 ms sound while retaining the clean peak ceiling and fast-tempo spacing.
+- Use English throughout the interface, tone choices and status messages.
+
 ## 1.5.0
 
 - 擴大音量控制的實用範圍，重做較響亮的拍點；低音量更細緻，滑動時平順過渡。

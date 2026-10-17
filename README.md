@@ -36,7 +36,7 @@
 
 ## 挑選清楚聽得到的拍點
 
-在 **Tone · 節拍音色** 選擇電子嗶聲、機械木聲、邊擊或牛鈴。樂器聲較大時，可先試邊擊或牛鈴，再調整 **Master Volume**；100% 使用完整的乾淨輸出範圍，低音量端可以細調。
+在 **Tone** 選擇Electronic、Mechanical、Rimshot 或 Cowbell。樂器聲較大時，可先試 Rimshot 或 Cowbell，再調整 **Master Volume**；100% 使用完整的乾淨輸出範圍，低音量端可以細調。介面以英文顯示，拍點增加聲音主體的能量，維持峰值餘量。
 
 音色以經典電子與機械節拍器常見類型為參考，皆為本專案原創合成，沒有使用品牌採樣。參考 [KORG KDM-3 的機械聲、邊擊與牛鈴](https://www.korg.com/us/products/tuners/kdm_3/) 及 [BOSS DB-90 的多音色設計](https://www.boss.info/global/products/db-90/)。
 
