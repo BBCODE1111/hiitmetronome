@@ -29,6 +29,7 @@ const bpmInput = document.getElementById('bpmInput');
 const bpmSlider = document.getElementById('bpmSlider');
 const volumeSlider = document.getElementById('volumeSlider');
 const volVal = document.getElementById('volVal');
+const toneSelect = document.getElementById('toneSelect');
 const startBtn = document.getElementById('startBtn');
 const beatLight = document.getElementById('beatLight');
 const infoBar = document.getElementById('infoBar');
@@ -67,6 +68,8 @@ volumeSlider.addEventListener('input', (e) => {
     volVal.textContent = volume + "%";
     sound?.setVolume(volume / 100);
 });
+
+toneSelect.addEventListener('change', () => sound?.setTone(toneSelect.value));
 
 sigNumerator.addEventListener('input', updateSigUI);
 sigDenominator.addEventListener('input', updateSigUI);
@@ -306,6 +309,7 @@ async function start() {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (!sound) sound = new MetronomeAudio.Engine(audioCtx);
         sound.setVolume(volume / 100);
+        sound.setTone(toneSelect.value);
 
         // Resume directly from the click gesture, before downloading voice data.
         const resumed = audioCtx.state === 'running' ? Promise.resolve() : audioCtx.resume();

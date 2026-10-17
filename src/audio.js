@@ -81,6 +81,49 @@
         return extraLoading;
     }
 
+    const tones = ['electronic', 'mechanical', 'rimshot', 'cowbell'];
+
+    // Original synthesized sounds, rendered once per device rate. Every tone
+    // ends before the next 400 BPM eighth-note cue's 20 ms articulation lead.
+    function clickPCM(sampleRate, tone, strong) {
+        const pcm = new Float32Array(Math.ceil(sampleRate * .05));
+        const pitch = strong ? 1.22 : 1;
+        let noiseState = 173;
+        for (let i = 0; i < pcm.length; i++) {
+            const t = i / sampleRate;
+            const sine = (hz, decay) => Math.sin(2 * Math.PI * hz * pitch * t) * Math.exp(-t / decay);
+            noiseState = (Math.imul(noiseState, 1664525) + 1013904223) | 0;
+            const noise = (noiseState / 2147483648) * Math.exp(-t / .002);
+            let sample;
+            switch (tone) {
+                case 'mechanical':
+                    sample = sine(780, .011) + .55 * sine(1960, .008) + .35 * sine(3350, .005) + .25 * noise;
+                    break;
+                case 'rimshot':
+                    sample = sine(1720, .012) + .65 * sine(2310, .009) + .4 * sine(3840, .006) + .65 * noise;
+                    break;
+                case 'cowbell':
+                    sample = sine(640, .021) + .85 * sine(945, .019) + .3 * sine(1280, .012) + .2 * sine(1890, .01);
+                    break;
+                default:
+                    sample = sine(1320, .016) + .3 * sine(2640, .009);
+            }
+            // Sub-millisecond attack and a short tail fade avoid discontinuities.
+            pcm[i] = sample * Math.min(1, t / .00025) * Math.min(1, (pcm.length - 1 - i) / (sampleRate * .004));
+        }
+        const peak = pcm.reduce((m, value) => Math.max(m, Math.abs(value)), 0);
+        for (let i = 0; i < pcm.length; i++) pcm[i] *= .94 / peak;
+        return pcm;
+    }
+
+    // Reserve a known peak budget for a simultaneous click. A constant scale
+    // preserves the recording's timbre and dynamics; no clipping or limiter.
+    function voiceHeadroom(pcm) {
+        const peak = pcm.reduce((m, value) => Math.max(m, Math.abs(value)), 0);
+        if (peak > .70) for (let i = 0; i < pcm.length; i++) pcm[i] *= .70 / peak;
+        return pcm;
+    }
+
     class Engine {
         constructor(context) {
             this.context = context;
@@ -88,9 +131,29 @@
             this.master.connect(context.destination);
             this.active = new Set();
             this.cache = new Map();
+            this.tone = 'electronic';
+            this.clickBuffers = new Map();
+            // Eight tiny buffers, shared by every beat, including live switches.
+            for (const tone of tones) for (const strong of [false, true]) {
+                const pcm = clickPCM(context.sampleRate || 48000, tone, strong);
+                const buffer = context.createBuffer(1, pcm.length, context.sampleRate || 48000);
+                buffer.getChannelData(0).set(pcm);
+                this.clickBuffers.set(`${tone}:${strong}`, buffer);
+            }
         }
 
-        setVolume(value) { this.master.gain.value = Math.max(0, Math.min(1, value)); }
+        setVolume(value) {
+            const level = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
+            const gain = this.master.gain, now = this.context.currentTime;
+            const current = gain.value;
+            // Audio taper: fine control near silence, full clean output at 100%.
+            // A 5 ms ramp prevents slider movements from introducing clicks.
+            gain.cancelScheduledValues(now);
+            gain.setValueAtTime(current, now);
+            gain.linearRampToValueAtTime(level * level, now + .005);
+        }
+
+        setTone(tone) { this.tone = tones.includes(tone) ? tone : 'electronic'; }
 
         async ready(count = 4) {
             await preload(this.context);
@@ -146,7 +209,7 @@
                 const variants = recorded.clips[words[0]];
                 const pcm = variants.find(samples => samples.length / recorded.sampleRate <= maxSeconds) || variants[variants.length - 1];
                 const buffer = this.context.createBuffer(1, pcm.length, recorded.sampleRate);
-                buffer.getChannelData(0).set(pcm);
+                buffer.getChannelData(0).set(voiceHeadroom(pcm.slice()));
                 if (this.cache.size >= 64) this.cache.delete(this.cache.keys().next().value);
                 this.cache.set(key, buffer);
                 return buffer;
@@ -157,7 +220,7 @@
             const original = new Float32Array(length);
             let offset = 0;
             for (const word of words) { original.set(this.clips[word], offset); offset += this.clips[word].length + gap; }
-            const pcm = MetronomeStretch.fitSpeech(original, this.sampleRate, maxSeconds);
+            const pcm = voiceHeadroom(MetronomeStretch.fitSpeech(original, this.sampleRate, maxSeconds));
             const buffer = this.context.createBuffer(1, pcm.length, this.sampleRate);
             buffer.getChannelData(0).set(pcm);
             // An arbitrary meter must never allocate audio for all its beats.
@@ -205,18 +268,16 @@
         }
 
         click(time, strong, withVoice = false) {
-            const osc = this.context.createOscillator();
-            const envelope = this.context.createGain();
-            osc.frequency.setValueAtTime(strong ? 1600 : 900, time);
-            osc.type = 'triangle';
-            envelope.gain.setValueAtTime(withVoice ? 0.18 : 0.4, time);
-            envelope.gain.exponentialRampToValueAtTime(0.0001, time + 0.035);
-            osc.connect(envelope);
-            envelope.connect(this.master);
-            this.track(osc, [envelope]);
-            osc.start(time);
-            osc.stop(time + 0.05);
-            return osc;
+            const source = this.context.createBufferSource();
+            const level = this.context.createGain();
+            source.buffer = this.clickBuffers.get(`${this.tone}:${!!strong}`);
+            // .70 voice + .24 click <= .94, even if their peaks coincide.
+            level.gain.value = withVoice ? .24 / .94 : 1;
+            source.connect(level);
+            level.connect(this.master);
+            this.track(source, [level]);
+            source.start(time);
+            return source;
         }
 
         stop() {
@@ -224,7 +285,7 @@
             this.active.clear();
         }
     }
-    globalThis.MetronomeAudio = { Engine, numberWords, preload, preloadExtra, countLeadSeconds };
+    globalThis.MetronomeAudio = { Engine, numberWords, preload, preloadExtra, countLeadSeconds, tones, clickPCM };
     preload().then(() => preloadExtra()).catch(() => {});
     // Failed optional background loads never prevent the bundled 1–4 count-in.
 })();

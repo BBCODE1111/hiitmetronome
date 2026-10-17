@@ -37,7 +37,7 @@ function createApp({ audio = true, loading = false, failed = false, sampleRate =
     return { length, sampleRate, duration: length / sampleRate, getChannelData: () => pcm };
   }
   class AudioContext {
-    state = 'running'; destination = {};
+    state = 'running'; destination = {}; sampleRate = sampleRate;
     get currentTime() { return clock; }
     async resume() { this.state = 'running'; }
     createOscillator() {
@@ -51,7 +51,11 @@ function createApp({ audio = true, loading = false, failed = false, sampleRate =
     }
     createBufferSource() {
       const voice = { playbackRate: { value: 1 }, connect() {}, disconnect() {},
-        start(time) { this.time = time; voices.push(this); }, stop() { this.cancelled = true; } };
+        start(time) {
+          this.time = time;
+          // Production click buffers are 50 ms; the shortest recorded voice is 65 ms.
+          (this.buffer.duration <= .0501 ? clicks : voices).push(this);
+        }, stop() { this.cancelled = true; } };
       return voice;
     }
     createBuffer(channels, length, rate) { return buffer(length, rate); }
@@ -68,7 +72,7 @@ function createApp({ audio = true, loading = false, failed = false, sampleRate =
       }
       return decodedCache.get(key);
     }
-    createGain() { return { gain: { value: 1, setValueAtTime() {}, exponentialRampToValueAtTime() {} }, connect() {}, disconnect() {} }; }
+    createGain() { return { gain: { value: 1, cancelScheduledValues() {}, setValueAtTime(v) {this.value=v;}, linearRampToValueAtTime(v) {this.value=v;}, exponentialRampToValueAtTime() {} }, connect() {}, disconnect() {} }; }
   }
   const window = { addEventListener() {}, OfflineAudioContext: AudioContext };
   if (audio) window.AudioContext = AudioContext;
@@ -219,7 +223,9 @@ test('quarter notes have accented downbeats and eighth notes halve the interval'
     await app.run('start()'); app.tick(2.2);
     const duration = note === 4 ? 0.5 : 0.25;
     assert.deepEqual(app.clicks.slice(0, 5).map(x => x.time), Array.from({ length: 5 }, (_, i) => 0.05 + i * duration));
-    assert.deepEqual(app.clicks.slice(0, 5).map(x => x.frequency), [1600, 900, 900, 900, 1600]);
+    assert.equal(app.clicks[0].buffer, app.clicks[4].buffer);
+    assert.equal(app.clicks[1].buffer, app.clicks[2].buffer);
+    assert.notDeepEqual(app.clicks[0].buffer.getChannelData(0), app.clicks[1].buffer.getChannelData(0), 'downbeat has a distinct pitch');
     assert.equal(app.voices.length, 0);
   }
 });
@@ -274,11 +280,13 @@ test('target reached and lower targets do not trigger phantom increments', async
 test('volume changes control the common voice and click output immediately', async () => {
   const app = createApp();
   await app.run('start()');
-  assert.equal(app.run('sound.master.gain.value'), 0.8);
+  assert.ok(Math.abs(app.run('sound.master.gain.value') - .64) < 1e-9);
   app.elements.get('volumeSlider').listeners.input({ target: { value: '0' } });
   assert.equal(app.run('sound.master.gain.value'), 0);
   app.elements.get('volumeSlider').listeners.input({ target: { value: '50' } });
-  assert.equal(app.run('sound.master.gain.value'), 0.5);
+  assert.equal(app.run('sound.master.gain.value'), 0.25);
+  app.elements.get('volumeSlider').listeners.input({ target: { value: '100' } });
+  assert.equal(app.run('sound.master.gain.value'), 1);
 });
 
 test('unavailable audio and failed voice loads cannot silently start; failed fetch is retryable', async () => {
@@ -367,4 +375,22 @@ test('all common recorded numbers use prebuilt lengths at every supported tempo'
 
 test('the entire bundled core voice transfer stays below 100 KB with gzip', () => {
   assert.ok(gzipSync(voiceDataSource).length < 100000);
+});
+
+
+test('four tones switch while running without resetting the beat clock or voice pitch', async () => {
+  const app = createApp();
+  app.run("toneSelect.value = 'mechanical'; intervalEnableToggle.checked = false; updateBPM(400); sigDenominator.value = '8'");
+  await app.run('start()');
+  const first = app.clicks[0].buffer;
+  for (const tone of ['rimshot', 'cowbell', 'electronic']) {
+    app.elements.get('toneSelect').value = tone;
+    app.elements.get('toneSelect').listeners.change();
+    app.tick(.075);
+    assert.notDeepEqual(first.getChannelData(0), app.clicks.at(-1).buffer.getChannelData(0));
+  }
+  assertAligned(app);
+  assert.equal(app.run('sound.clickBuffers.size'), 8, 'live changes reuse the prepared tone bank');
+  app.run('stop()');
+  assert.ok([...app.clicks, ...app.voices].every(source => source.cancelled));
 });
