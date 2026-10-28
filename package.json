@@ -1,8 +1,8 @@
 {
-  "name": "intervalmetronome",
-  "version": "1.5.1",
+  "name": "hiitmetronome",
+  "version": "1.6.0",
   "private": true,
-  "description": "Interval metronome for guitar and instrument practice",
+  "description": "吉他健身房 HIIT METRONOME — interval-training metronome for guitar practice",
   "type": "module",
   "engines": {
     "node": ">=22"

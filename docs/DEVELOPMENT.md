@@ -15,7 +15,7 @@ npm run build
 npm run preview
 ```
 
-開啟 http://127.0.0.1:4173/intervalmetronome/ 。可用 `PORT=8080 npm run preview` 指定其他連接埠。
+開啟 http://127.0.0.1:4173/hiitmetronome/ 。可用 `PORT=8080 npm run preview` 指定其他連接埠。
 
 ## 語音起音處理
 
@@ -29,8 +29,8 @@ npm run preview
 
 另可執行 `npm run qa:browser`、`npm run preview`，開啟：
 
-- `/intervalmetronome/audio-qa.html`：按 Run waveform checks，以瀏覽器的 `OfflineAudioContext` 渲染實際音檔，分別測量排程誤差、字音主體與拍點的相對位置、跨拍重疊、靜音與停止。包含 44.1 / 48 kHz、9 種 BPM、兩種音符值，以及 1–10、17、21、101、最大安全整數。
-- `/intervalmetronome/live-qa.html`：本機測試版介面，在首次／再次 START 時顯示實際語音訊號峰值、頁面到常用語音準備完成時間，以及按鈕到第一個音訊訊號時間（不含硬體輸出延遲）。報數應依序出現，且非靜音時每個數字的 peak 大於 0。
+- `/hiitmetronome/audio-qa.html`：按 Run waveform checks，以瀏覽器的 `OfflineAudioContext` 渲染實際音檔，分別測量排程誤差、字音主體與拍點的相對位置、跨拍重疊、靜音與停止。包含 44.1 / 48 kHz、9 種 BPM、兩種音符值，以及 1–10、17、21、101、最大安全整數。
+- `/hiitmetronome/live-qa.html`：本機測試版介面，在首次／再次 START 時顯示實際語音訊號峰值、頁面到常用語音準備完成時間，以及按鈕到第一個音訊訊號時間（不含硬體輸出延遲）。報數應依序出現，且非靜音時每個數字的 peak 大於 0。
 
 這些頁面只供本機測試；正常 `npm run build` 會移除，不會部署。波形驗證不等同於在所有手機、耳機與瀏覽器上逐一聆聽。拍數支援 JavaScript 可精確表示的正整數（至 9,007,199,254,740,991），只按需組合當前數字，音檔快取最多保留 64 組。
 
@@ -59,7 +59,7 @@ GitHub Releases 提供可直接部署的網站 ZIP、原始碼下載與包含完
 ```sh
 git clone intervalmetronome-v1.3.1.bundle intervalmetronome
 cd intervalmetronome
-git remote set-url origin https://github.com/BBCODE1111/intervalmetronome.git
+git remote set-url origin https://github.com/BBCODE1111/hiitmetronome.git
 ```
 
 ## GitHub Pages 部署

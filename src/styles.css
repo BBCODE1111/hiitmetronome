@@ -289,3 +289,19 @@ label { position: relative; }
 .sound-hint { color: #aaa; font-size: .6rem; }
 .volume-hint { margin-top: 8px; text-align: left; }
 #volVal { min-width: 4ch; text-align: right; }
+
+/* Brand line and quiet maker credit */
+.hardware-case .logo-area { color: #7a7a7a; border-color: #555; }
+.logo-cn { font-family: system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif; font-weight: 700; letter-spacing: .15em; margin-right: .35em; color: #a8893a; }
+.credit {
+    position: absolute;
+    right: 18px;
+    bottom: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: .55rem;
+    letter-spacing: .12em;
+    color: #555;
+    pointer-events: none;
+    user-select: none;
+}
+@media (max-width: 480px) { .credit { right: 12px; bottom: 5px; font-size: .45rem; } }

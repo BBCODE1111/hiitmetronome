@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0
+
+- 更名為「吉他健身房 HIIT METRONOME」，網址改為 /hiitmetronome/。
+- 面板右下角加上低調的 power by BBCODE1111；品牌名稱調亮，中文字以金色顯示。
+- README 改以 HIIT 間歇訓練的方式說明，並更新全部截圖，新增練習中／休息中畫面。
+
 ## 1.5.1
 
 - Add a Punchy attack group with Rimshot, Woodblock and Clave; make Rimshot the default and retain the three Classic tones.

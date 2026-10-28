@@ -10,7 +10,7 @@ await stat(resolve(root, 'index.html'));
 createServer(async (request, response) => {
   try {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    const relative = pathname.startsWith('/intervalmetronome/') ? pathname.slice('/intervalmetronome'.length) : pathname;
+    const relative = pathname.startsWith('/hiitmetronome/') ? pathname.slice('/hiitmetronome'.length) : pathname;
     const file = resolve(root, `.${relative.endsWith('/') ? `${relative}index.html` : relative}`);
     if (!file.startsWith(root + sep)) { response.writeHead(403).end(); return; }
     let body = await readFile(file);
@@ -21,4 +21,4 @@ createServer(async (request, response) => {
   } catch {
     response.writeHead(404).end('Not found');
   }
-}).listen(port, '127.0.0.1', () => console.log(`Preview: http://127.0.0.1:${port}/intervalmetronome/`));
+}).listen(port, '127.0.0.1', () => console.log(`Preview: http://127.0.0.1:${port}/hiitmetronome/`));
