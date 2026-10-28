@@ -84,4 +84,4 @@ BPM 以四分音符計算，所以同樣的 BPM 下，選 `/8` 時的拍點間�
 
 ---
 
-**[開始練習 →](https://bbcode1111.github.io/hiitmetronome/)** · [素材與授權](THIRD_PARTY_NOTICES.md) · power by BBCODE1111
+**[開始練習 →](https://bbcode1111.github.io/hiitmetronome/)** · [素材與授權](THIRD_PARTY_NOTICES.md) · powered by BBCODE1111
