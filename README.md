@@ -78,7 +78,7 @@ BPM 以四分音符計算，所以同樣的 BPM 下，選 `/8` 時的拍點間�
 - **Punchy attack**：Rimshot（預設）、Woodblock、Clave，起音清脆，樂器音量大時比較容易聽清楚。
 - **Classic**：Electronic、Mechanical、Cowbell。
 
-**Master Volume** 同時控制拍點和語音，從靜音到 100% 都可以細調。音色都是本專案原創合成，沒有使用品牌採樣；設計上參考了 [KORG KDM-3](https://www.korg.com/us/products/tuners/kdm_3/)、[BOSS DB-90](https://www.boss.info/global/products/db-90/) 與 [Roland TR-808](https://support.roland.com/hc/en-us/articles/201963539-TR-808-Technical-Specifications) 的經典節拍器聲音類型。
+**Master Volume** 同時控制拍點和語音，從靜音到 100% 都可以細調。音色都是本專案原創合成，沒有使用品牌採樣。
 
 > 練習時請讓頁面保持在前景、螢幕保持開啟。速度很快或每小節拍數很多時，語音報數會變得比較緊湊。
 
