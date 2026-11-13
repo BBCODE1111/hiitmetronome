@@ -15,6 +15,7 @@ let bpm = 120;
 let currentMeasure = 1;
 let currentBeat = 0; // 0 為強音
 let incrementCount = 0;
+let stepPhase = 'up';
 let isResting = false;
 let volume = 80;
 
@@ -43,6 +44,59 @@ const intervalPanel = document.getElementById('intervalPanel');
 const stepMeasures = document.getElementById('stepMeasures');
 const stepAmount = document.getElementById('stepAmount');
 const targetBPM = document.getElementById('targetBPM');
+const trainingMode = document.getElementById('trainingMode');
+const downMeasures = document.getElementById('downMeasures');
+const downAmount = document.getElementById('downAmount');
+const stepDownPanel = document.getElementById('stepDownPanel');
+const trainingHint = document.getElementById('trainingHint');
+const trainingError = document.getElementById('trainingError');
+
+function isStepMode() { return trainingMode.value === 'step'; }
+
+function validateTraining(checkStart = false) {
+    let error = '';
+    const inputs = [stepMeasures, stepAmount, downMeasures, downAmount, targetBPM];
+    const bounds = [[1, 999], [1, 100], [1, 999], [1, 99], [30, 400]];
+    for (const [i, input] of inputs.entries()) {
+        const value = Number(input.value);
+        const invalid = isStepMode() && intervalEnableToggle.checked &&
+            (!Number.isInteger(value) || value < bounds[i][0] || value > bounds[i][1]);
+        input.setAttribute('aria-invalid', String(invalid));
+        if (invalid) error = '請輸入範圍內的正整數：小節 1–999、加速 1–100、減速 1–99、BPM 30–400。';
+    }
+    if (isStepMode() && intervalEnableToggle.checked && !error) {
+        if (Number(downAmount.value) >= Number(stepAmount.value)) {
+            error = '減速幅度必須小於加速幅度，才能逐步達到目標速度。';
+            downAmount.setAttribute('aria-invalid', 'true');
+        } else if (checkStart && Number(targetBPM.value) <= bpm) {
+            error = 'Step 模式的目標 BPM 必須高於起始 BPM。';
+            targetBPM.setAttribute('aria-invalid', 'true');
+        }
+    }
+    trainingError.textContent = error;
+    trainingHint.textContent = isStepMode()
+        ? `每 ${stepMeasures.value} 小節 ＋${stepAmount.value} BPM，再每 ${downMeasures.value} 小節 －${downAmount.value} BPM；達標後維持目標速度。休息按升速次數計算。`
+        : '';
+    return !error;
+}
+
+function updateTrainingMode() {
+    stepDownPanel.hidden = !isStepMode();
+    stepPhase = 'up';
+    currentMeasure = 1;
+    incrementCount = 0;
+    validateTraining();
+    updateStatusInfo();
+}
+trainingMode.addEventListener('change', updateTrainingMode);
+for (const input of [stepMeasures, stepAmount, downMeasures, downAmount, targetBPM]) {
+    input.addEventListener('input', () => {
+        const valid = validateTraining();
+        // An invalid live edit must never launch a non-converging cycle.
+        if (!valid && isPlaying) stop();
+    });
+}
+
 
 const restIntervals = document.getElementById('restIntervals');
 const restSeconds = document.getElementById('restSeconds');
@@ -81,12 +135,14 @@ function readNumber(input, min, max, fallback) {
 
 const numericSettings = [
     [stepMeasures, 1, 999, 8],
+    [downMeasures, 1, 999, 8], [downAmount, 1, 99, 4],
     [stepAmount, 1, 100, 10], [targetBPM, 30, 400, 200],
     [restIntervals, 1, 999, 4], [restSeconds, 1, 3600, 10],
 ];
 for (const [input, min, max, fallback] of numericSettings) {
     input.addEventListener('change', () => {
         input.value = readNumber(input, min, max, fallback);
+        validateTraining();
     });
 }
 
@@ -133,7 +189,12 @@ function updateToggleVisuals(checkbox, panel) {
     }
 }
 
-intervalEnableToggle.addEventListener('change', () => updateToggleVisuals(intervalEnableToggle, intervalPanel));
+intervalEnableToggle.addEventListener('change', () => {
+    updateToggleVisuals(intervalEnableToggle, intervalPanel);
+    currentMeasure = 1;
+    stepPhase = 'up';
+    if (!validateTraining() && isPlaying) stop();
+});
 restEnableToggle.addEventListener('change', () => updateToggleVisuals(restEnableToggle, restPanel));
 
 function later(callback, delay) {
@@ -222,29 +283,30 @@ function advanceBeat() {
 }
 
 function checkIntervals() {
-    const mLimit = readNumber(stepMeasures, 1, 999, 8);
-    const bIncr = readNumber(stepAmount, 1, 100, 10);
+    if (!validateTraining()) {
+        stop();
+        return;
+    }
+    const descending = isStepMode() && stepPhase === 'down';
+    const mLimit = descending ? readNumber(downMeasures, 1, 999, 8) : readNumber(stepMeasures, 1, 999, 8);
+    if (currentMeasure <= mLimit) return;
+    currentMeasure = 1;
     const maxB = readNumber(targetBPM, 30, 400, 200);
+    // Once reached, hold the target; do not start another downward phase.
+    if (bpm >= maxB) return;
+    const amount = descending ? -readNumber(downAmount, 1, 99, 4) : readNumber(stepAmount, 1, 100, 10);
+    const nextBpm = Math.min(bpm + amount, maxB);
+    if (!descending) incrementCount++;
+    if (isStepMode()) stepPhase = descending ? 'up' : 'down';
+
     const rIncrLimit = readNumber(restIntervals, 1, 999, 4);
-
-    if (currentMeasure > mLimit) {
-        currentMeasure = 1;
-        if (bpm >= maxB) return;
-        incrementCount++;
-        const nextBpm = Math.min(bpm + bIncr, maxB);
-
-        if (restEnableToggle.checked && rIncrLimit > 0 && incrementCount >= rIncrLimit) {
-            triggerRest(nextBpm);
-        } else {
-            if (bpm >= maxB) {
-                infoBar.textContent = "TARGET REACHED";
-            } else {
-                updateBPM(nextBpm);
-                if (changeCueToggle.checked) {
-                    cueCounter = 1; // 啟動倒數
-                    currentBeat = 0;
-                }
-            }
+    if (!descending && restEnableToggle.checked && incrementCount >= rIncrLimit) {
+        triggerRest(nextBpm);
+    } else {
+        updateBPM(nextBpm);
+        if (changeCueToggle.checked) {
+            cueCounter = 1;
+            currentBeat = 0;
         }
     }
 }
@@ -262,7 +324,8 @@ function triggerRest(nextGoalBpm) {
 }
 
 function updateStatusInfo() {
-    progressInfo.textContent = `MSR: ${currentMeasure} | INCR: ${incrementCount} | STATUS: ${!isPlaying ? 'STOPPED' : (isResting ? 'RESTING' : (cueCounter > 0 ? 'CUEING' : 'RUNNING'))}`;
+    const phase = isStepMode() && intervalEnableToggle.checked ? ` | NEXT: ${bpm >= readNumber(targetBPM, 30, 400, 200) ? 'HOLD' : stepPhase.toUpperCase()}` : '';
+    progressInfo.textContent = `MSR: ${currentMeasure} | INCR: ${incrementCount}${phase} | STATUS: ${!isPlaying ? 'STOPPED' : (isResting ? 'RESTING' : (cueCounter > 0 ? 'CUEING' : 'RUNNING'))}`;
 }
 
 function stop() {
@@ -276,6 +339,7 @@ function stop() {
     restEndsAt = 0;
     cueCounter = 0;
     beatLight.classList.remove('active');
+    trainingMode.disabled = false;
     startBtn.textContent = 'START';
     startBtn.classList.remove('active');
     startBtn.setAttribute('aria-pressed', 'false');
@@ -295,11 +359,17 @@ async function start() {
         sigNumerator.focus();
         return;
     }
-    const thisSession = ++session;
     updateBPM(bpmInput.value);
+    if (!validateTraining(true)) {
+        infoBar.textContent = '請修正訓練設定後再開始。';
+        (Number(targetBPM.value) <= bpm ? targetBPM : downAmount).focus();
+        return;
+    }
+    const thisSession = ++session;
     for (const [input, min, max, fallback] of numericSettings) input.value = readNumber(input, min, max, fallback);
     applySignature();
     isPlaying = true;
+    trainingMode.disabled = true;
     isResting = false;
     startBtn.textContent = "STOP";
     startBtn.classList.add('active');
@@ -329,6 +399,7 @@ async function start() {
     currentMeasure = 1;
     currentBeat = 0;
     incrementCount = 0;
+    stepPhase = 'up';
 
     // No beat is scheduled until all voice samples are decoded and ready.
     nextBeatTime = audioCtx.currentTime + 0.05;
@@ -345,3 +416,6 @@ window.addEventListener('pagehide', stop);
 updateSigUI();
 updateToggleVisuals(intervalEnableToggle, intervalPanel);
 updateToggleVisuals(restEnableToggle, restPanel);
+
+
+updateTrainingMode();

@@ -7,11 +7,11 @@
     <meta name="description" content="吉他健身房 HIIT METRONOME：像間歇訓練一樣練琴的線上節拍器。自動逐步加速、定時休息、自由拍號與語音預備拍，免安裝、免登入。">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <meta name="theme-color" content="#121212">
-    <link rel="stylesheet" href="./assets/styles.css?v=1.6.0">
-    <script src="./assets/audio/voice-data.js?v=1.6.0" defer></script>
-    <script src="./assets/stretch.js?v=1.6.0" defer></script>
-    <script src="./assets/audio.js?v=1.6.0" defer></script>
-    <script src="./assets/app.js?v=1.6.0" defer></script>
+    <link rel="stylesheet" href="./assets/styles.css?v=1.7.0">
+    <script src="./assets/audio/voice-data.js?v=1.7.0" defer></script>
+    <script src="./assets/stretch.js?v=1.7.0" defer></script>
+    <script src="./assets/audio.js?v=1.7.0" defer></script>
+    <script src="./assets/app.js?v=1.7.0" defer></script>
 </head>
 <body>
     <noscript>Please enable JavaScript to use the metronome.</noscript>
@@ -94,7 +94,11 @@
         <!-- INTERVAL TRAINING ENGINE -->
         <div class="control-group">
             <div class="flex justify-between items-center mb-3">
-                <div class="label-text text-amber-600 font-bold">Interval Training Engine</div>
+                <label for="trainingMode" class="sr-only">Training mode</label>
+                <select id="trainingMode" class="training-mode" aria-label="Training mode">
+                    <option value="interval" selected>Interval Metronome</option>
+                    <option value="step">Step Metronome</option>
+                </select>
                 <div class="slide-toggle-wrap">
                     <span class="toggle-label">OFF</span>
                     <label class="cursor-pointer">
@@ -120,6 +124,19 @@
                     <div class="label-text text-[0.55rem]">Target BPM</div>
                     <input type="number" id="targetBPM" aria-label="Target BPM" min="30" max="400" step="1" class="input-box w-full mt-1" value="200">
                 </div>
+                <div id="stepDownPanel" class="step-down-row" hidden>
+                    <div class="flex flex-col items-center">
+                        <label for="downMeasures" class="label-text text-[0.55rem]">Then (MSR)</label>
+                        <input type="number" id="downMeasures" aria-label="Measures before decrement" min="1" max="999" step="1" class="input-box w-full mt-1" value="8" aria-describedby="trainingError">
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <label for="downAmount" class="label-text text-[0.55rem]">Decr (BPM)</label>
+                        <input type="number" id="downAmount" aria-label="BPM decrement" min="1" max="99" step="1" class="input-box w-full mt-1" value="4" aria-describedby="trainingError">
+                    </div>
+                    <div class="sound-hint">升速 → 降速<br>循環至目標速度</div>
+                </div>
+                <div id="trainingHint" class="training-hint" aria-live="polite"></div>
+                <div id="trainingError" class="training-error" role="status"></div>
             </div>
         </div>
 
@@ -189,3 +206,4 @@
 
 </body>
 </html>
+
