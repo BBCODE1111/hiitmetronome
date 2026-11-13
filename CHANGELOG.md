@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.0 — Step Metronome
+
+- 訓練模式改為 Interval / Step 下拉選單。
+- Step 分別設定每幾小節升速／降速，達標後維持目標 BPM。
+- 檢查減速幅度小於加速幅度、目標高於起始速度與整數範圍。
+- 保留預備拍與休息；休息只累計升速次數。
+
 ## 1.6.0
 
 - 更名為「吉他健身房 HIIT METRONOME」，網址改為 /hiitmetronome/。

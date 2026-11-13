@@ -394,3 +394,90 @@ test('tones switch while running without resetting the beat clock or voice pitch
   app.run('stop()');
   assert.ok([...app.clicks, ...app.voices].every(source => source.cancelled));
 });
+
+
+test('Step mode alternates +8/-4 after separate complete measure blocks and holds the target', async () => {
+  const app = createApp();
+  app.run("trainingMode.value='step'; updateTrainingMode(); startCueToggle.checked=false; changeCueToggle.checked=false; restEnableToggle.checked=false; stepMeasures.value='8'; stepAmount.value='8'; downMeasures.value='8'; downAmount.value='4'; targetBPM.value='138'");
+  await app.run('start()');
+  // The scheduler has queued the first beat, but no completed measure yet.
+  app.run('currentBeat=0; currentMeasure=1');
+  const observed = [app.run('bpm')];
+  for (let phase = 0; phase < 7; phase++) {
+    app.run('for (let i=0;i<31;i++) advanceBeat()');
+    assert.equal(app.run('bpm'), observed.at(-1), 'no change before the last beat finishes');
+    app.run('advanceBeat()');
+    observed.push(app.run('bpm'));
+  }
+  assert.deepEqual(observed, [120,128,124,132,128,136,132,138]);
+  const increments = app.run('incrementCount');
+  app.run('for(let i=0;i<128;i++) advanceBeat()');
+  assert.equal(app.run('bpm'),138);
+  assert.equal(app.run('incrementCount'), increments);
+  assert.match(app.elements.get('progressInfo').textContent,/NEXT: HOLD/);
+});
+
+test('Step mode uses independent up/down measure counts and transition cues on both changes', async () => {
+  const app = createApp();
+  app.run("trainingMode.value='step'; stepMeasures.value='2'; downMeasures.value='3'; stepAmount.value='8'; downAmount.value='4'; startCueToggle.checked=false; restEnableToggle.checked=false");
+  await app.run('start()');
+  app.run('currentMeasure=2; currentBeat=3; advanceBeat()');
+  assert.equal(app.run('bpm'),128);
+  assert.equal(app.run('cueCounter'),1);
+  app.run('for(let i=0;i<4;i++) advanceBeat()');
+  assert.equal(app.run('currentMeasure'),1,'count-in is excluded from training measures');
+  app.run('for(let i=0;i<11;i++) advanceBeat()');
+  assert.equal(app.run('bpm'),128);
+  app.run('advanceBeat()');
+  assert.equal(app.run('bpm'),124);
+  assert.equal(app.run('cueCounter'),1);
+  assert.equal(app.run('incrementCount'),1);
+});
+
+test('Step settings reject non-converging cycles, invalid numbers and a non-increasing target', async () => {
+  for(const settings of ["downAmount.value='8'", "downAmount.value='9'", "downAmount.value=''", "downAmount.value='-1'", "downAmount.value='1.5'", "downMeasures.value='0'", "stepMeasures.value='1000'", "targetBPM.value='120'", "targetBPM.value='119'"]) {
+    const app = createApp();
+    app.run("trainingMode.value='step'; stepAmount.value='8'; " + settings);
+    await app.run('start()');
+    assert.equal(app.run('isPlaying'),false, settings);
+    assert.ok(app.elements.get('trainingError').textContent, settings);
+    assert.equal(app.clicks.length,0);
+  }
+});
+
+test('Step live validation stops an invalid cycle; interval mode and disabled training ignore decrement settings', async () => {
+  const app=createApp();
+  app.run("trainingMode.value='step'; stepAmount.value='8'");
+  await app.run('start()');
+  app.elements.get('downAmount').value='8';
+  app.elements.get('downAmount').listeners.input();
+  assert.equal(app.run('isPlaying'),false);
+  assert.match(app.elements.get('trainingError').textContent,/減速幅度/);
+  app.run("trainingMode.value='interval'; updateTrainingMode()");
+  assert.equal(app.elements.get('stepDownPanel').hidden,true);
+  await app.run('start()');
+  assert.equal(app.run('isPlaying'),true);
+  app.run("stop(); trainingMode.value='step'; intervalEnableToggle.checked=false");
+  await app.run('start()');
+  assert.equal(app.run('isPlaying'),true);
+});
+
+test('Step rests count only upward changes and preserve phase across rest; restart begins upward', async () => {
+  const app=createApp();
+  app.run("trainingMode.value='step'; stepAmount.value='8'; stepMeasures.value='1'; downMeasures.value='1'; restIntervals.value='2'; restSeconds.value='1'; startCueToggle.checked=false; changeCueToggle.checked=false; sigNumerator.value='1'");
+  await app.run('start()');
+  // First +8 happens when the queued single-beat measure ends.
+  assert.equal(app.run('bpm'),128);
+  app.tick(.55);
+  assert.equal(app.run('bpm'),124);
+  assert.equal(app.run('isResting'),false);
+  app.tick(.55);
+  assert.equal(app.run('bpm'),132);
+  assert.equal(app.run('isResting'),true);
+  assert.equal(app.run('stepPhase'),'down');
+  app.tick(1.5);
+  assert.equal(app.run('bpm'),128,'the next transition after rest is downward');
+  app.run('stop()');
+  await app.run('start()');
+  assert.equal(app.run('bpm'),136,'restart begins a fresh upward cycle');
+});

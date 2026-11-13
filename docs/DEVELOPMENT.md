@@ -1,5 +1,13 @@
 # 開發與維護說明
 
+## Step Metronome
+
+訓練區下拉選單可選 Interval Metronome（原本持續加速）或 Step Metronome（交替加速／降速）。播放期間鎖定模式選單，停止後可切換。Step 可分別設定升速前與降速前的小節數、加減 BPM 與目標速度。例如起始 120、每 8 小節 +8、再每 8 小節 −4，速度依序為 120 → 128 → 124 → 132 → 128…，首次達標即維持目標 BPM，最後一次升速會截到目標值。
+
+減速幅度須小於加速幅度，目標須高於起始速度；小節與 BPM 欄位必須為範圍內整數。無效設定阻止啟動，播放中輸入無效值會停止，避免無法收斂的循環。預備拍不計入練習小節，升降速都在完整小節結束後套用。Rest 只累計升速次數，休息後保留下一個升降速階段；重新 START 則從升速階段開始。
+
+`tests/metronome.test.mjs` 新增 Step 速度序列、獨立小節數、達標維持、雙向預備拍、無效輸入、播放中檢查、原模式隔離、休息與重新啟動的回歸測試。
+
 原始專案：[Alecliu/intervalmetronome](https://github.com/Alecliu/intervalmetronome)。本倉庫保留完整 Git 歷史，作為 BBCODE1111 的發布版本。
 
 素材來源與授權請見 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
@@ -69,3 +77,4 @@ git remote set-url origin https://github.com/BBCODE1111/hiitmetronome.git
 首次建立倉庫時需啟用 Pages。後續更新可在 **Actions → Test and deploy GitHub Pages** 檢查紀錄，亦可手動執行 workflow。
 
 部署方式依 [GitHub Pages 官方文件](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。樣式使用鎖定版本的 Tailwind Node 編譯器，只編譯 `index.html` 中出現的 utility classes；動態狀態樣式寫在 `src/styles.css`，不需要監看檔案的服務。
+
